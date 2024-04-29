@@ -8,14 +8,24 @@ const io = require("socket.io")(3000, {
 const {
   generateMessage,
   generateLocationMessage,
-} = require("./util/message.js");
+} = require("./utils/message.js");
+const { isString } = require("./utils/isString.js");
 
 io.on("connection", (socket) => {
-  socket.emit("newMessage", generateMessage("Admin", "Welcome to our chat"));
-  socket.broadcast.emit(
-    "newMessage",
-    generateMessage("Admin", "New User Joined!")
-  );
+  
+
+  socket.on("join", (params, cb) => {
+    console.log(params);
+
+    if (!isString(params.name) || !isString(params.room)) {
+      return cb('Name and Room are requied')
+    }
+    socket.join(params.room)
+    socket.emit("newMessage", generateMessage("Admin", `Welcome to ${params.room} Chat`));
+    socket.broadcast.to(params.room).emit("newMessage", generateMessage("Admin", "New User Joined!"));
+
+
+  });
 
   socket.on("createMessage", (message) => {
     socket.broadcast.emit(

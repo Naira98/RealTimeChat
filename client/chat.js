@@ -7,8 +7,8 @@ const sendBtn = document.querySelector("#submit-btn");
 const locationBtn = document.querySelector("#send-location");
 const form = document.querySelector("form");
 
-function scrollTobottom () {
-  const lastMessage = document.querySelector('#messages').lastElementChild;
+function scrollTobottom() {
+  const lastMessage = document.querySelector("#messages").lastElementChild;
   lastMessage.scrollIntoView();
 }
 
@@ -16,6 +16,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const socket = io("http://localhost:3000");
   socket.on("connect", () => {
     console.log(`you conncted with id: ${socket.id}`);
+    let paramsString = window.location.search.substring(1);
+    console.log(paramsString);
+    let paramsObject = {};
+    const queries = paramsString.split("&");
+
+    for (let i = 0; i < queries.length; i++) {
+      const keyValuePairs = queries[i].replaceAll("+", " ").split("=");
+      for (let j = 0; j < keyValuePairs.length; j++) {
+        paramsObject[keyValuePairs[0]] = keyValuePairs[1];
+      }
+    }
+    console.log(paramsObject);
+
+    socket.emit("join", paramsObject, (err) => {
+      if (err) {
+        alert(err);
+        window.location.href = "/";
+      }
+    });
+    // paramsObject.(qureies[0].split('=')[0] = qureies[0].split('=')[1];
+    // console.log(paramsObject);
+    // console.log(JSON.stringify('{"' + decodeURI(params).replace('=', '":"').replace('+', ' ').replace('&', '","').replace('=', '":"')+ '"}'))
   });
 
   socket.on("newMessage", (message) => {
@@ -62,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
       url: urlMessage.url,
       createdAt: formatedTime,
     });
-    const div = document.createElement('div');
+    const div = document.createElement("div");
     div.innerHTML = html;
     messageDisplay.appendChild(div);
     scrollTobottom();
@@ -80,8 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
           lng: position.coords.longitude,
         });
         scrollTobottom();
-      }
-      ,
+      },
       () => {
         return alert("Unable to fetch poistion");
       }
