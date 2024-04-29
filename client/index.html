@@ -14,12 +14,7 @@
 
     <div class="chat__sidebar">
         <h3>People</h3>
-        <div id="users">
-            <ul>
-                <li>John</li>
-                <li>Micheal</li>
-            </ul>
-        </div>
+        <div id="users"></div>
     </div>
 
     <div class="chat__main">
@@ -48,7 +43,7 @@
     <script id="location-message" type="text/template">
         <li class="message">
             <div class="message__title">
-                {{ from }}
+                <h4>{{ from }}</h4>
                 <span>{{ createdAt }}</span>
             </div>
             <div class="message__body">

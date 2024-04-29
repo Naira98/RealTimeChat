@@ -7,6 +7,11 @@ const sendBtn = document.querySelector("#submit-btn");
 const locationBtn = document.querySelector("#send-location");
 const form = document.querySelector("form");
 
+function scrollTobottom () {
+  const lastMessage = document.querySelector('#messages').lastElementChild;
+  lastMessage.scrollIntoView();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const socket = io("http://localhost:3000");
   socket.on("connect", () => {
@@ -24,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const div = document.createElement("div");
     div.innerHTML = html;
     messageDisplay.appendChild(div);
+    scrollTobottom();
     // displayMessage(message);
   });
 
@@ -44,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // displayMessage(message);
       socket.emit("createMessage", message);
       messageInput.value = "";
+      scrollTobottom();
     }
   });
 
@@ -58,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const div = document.createElement('div');
     div.innerHTML = html;
     messageDisplay.appendChild(div);
+    scrollTobottom();
   });
 
   locationBtn.addEventListener("click", (e) => {
@@ -71,7 +79,9 @@ document.addEventListener("DOMContentLoaded", () => {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
-      },
+        scrollTobottom();
+      }
+      ,
       () => {
         return alert("Unable to fetch poistion");
       }
