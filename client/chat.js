@@ -53,7 +53,6 @@ socket.on("updatedList", (updatedList) => {
 
 // Welcoming, new user joined, someone else message
 socket.on("newMessage", (message) => {
-  console.log(message);
   const formatedTime = moment(message.createdAt).format("LT");
   const template = document.querySelector("#message").innerHTML;
   const html = Mustache.render(template, {
