@@ -4,7 +4,7 @@
 //     room: 'Socket.io'
 // }]
 
-class User {
+class Users {
   constructor() {
     this.users = [];
   }
@@ -14,21 +14,21 @@ class User {
     this.users.push(user);
     return user;
   }
-  getUserList(room) {
+  getUsersList(room) {
     let users = this.users.filter((user) => user.room === room);
-    let namesArray = users.map(user.name);
+    let namesArray = users.map((user) => user.name);
     return namesArray;
   }
   getUser(id) {
-    return this.users.filter((user) => user.id === id);
+    return this.users.filter((user) => user.id === id)[0];
   }
   removeUser(id) {
-    let user = user.getUser(id);
+    let user = this.getUser(id);
     if (user) {
-      this.users = this.users.filter((user) => user.id !== user.id);
+      this.users = this.users.filter((user) => user.id !== id);
     }
     return user;
   }
 }
 
-module.exports = { User };
+module.exports = { Users };
