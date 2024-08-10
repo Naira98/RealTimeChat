@@ -27,16 +27,16 @@ h3 {
   font-size: 1.5rem;
 }
 button {
-  background: #265f82;
+  background: hsl(203, 55%, 33%);
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.2s ease;
 }
 button:hover {
-  background: #1f4c69;
+  background: hsla(203, 55%, 33%, 0.878);
 }
 button:disabled {
   cursor: default;
-  background: #698ea5;
+  background: hsla(203, 55%, 33%, 0.878);
 }
 .centered-form {
   display: flex;
@@ -197,6 +197,7 @@ button:disabled {
 .message__title span {
   color: #999;
 }
+
 @media (max-width: 600px) {
   * {
     font-size: 1rem;

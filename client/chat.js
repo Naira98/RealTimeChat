@@ -5,40 +5,25 @@ const messageDisplay = document.querySelector(".chat__messages");
 const messageInput = document.querySelector("input");
 const sendBtn = document.querySelector("#submit-btn");
 const locationBtn = document.querySelector("#send-location");
-const form = document.querySelector("form");
-
-function scrollTobottom() {
-  const lastMessage = document.querySelector("#messages").lastElementChild;
-  lastMessage.scrollIntoView();
-}
 
 const socket = io("http://localhost:3000");
-// Get name and room
-socket.on("connect", () => {
-  let paramsString = window.location.search.substring(1);
-  let paramsObject = {};
-  const queries = paramsString.split("&");
 
-  for (let i = 0; i < queries.length; i++) {
-    const keyValuePairs = queries[i].replaceAll("+", " ").split("=");
-    for (let j = 0; j < keyValuePairs.length; j++) {
-      paramsObject[keyValuePairs[0]] = keyValuePairs[1];
-    }
-  }
+socket.on("connect", () => {
+  // Get name and room
+  const { name, room } = Qs.parse(window.location.search, {
+    ignoreQueryPrefix: true,
+  });
 
   // Send name and room to backend to join
-  socket.emit("join", paramsObject, (err) => {
+  socket.emit("join", { name, room }, (err) => {
     if (err) {
       alert(err);
       window.location.href = "/";
     }
   });
-  // paramsObject.(qureies[0].split('=')[0] = qureies[0].split('=')[1];
-  // console.log(paramsObject);
-  // console.log(JSON.stringify('{"' + decodeURI(params).replace('=', '":"').replace('+', ' ').replace('&', '","').replace('=', '":"')+ '"}'))
 });
 
-// Someone entered the room
+// Someone entered or leave the room
 socket.on("updatedList", (updatedList) => {
   const ol = document.createElement("ol");
   updatedList.map((user) => {
@@ -64,26 +49,13 @@ socket.on("newMessage", (message) => {
   div.innerHTML = html;
   messageDisplay.appendChild(div);
   scrollTobottom();
-  // displayMessage(message);
 });
 
-sendBtn.addEventListener(
-  "click",
-  (e) => {
-    e.preventDefault();
-    // if (message !== "") {
-    // const formatedTime = moment(message.createdAt).format("LT");
-    // const template = document.querySelector("#message").innerHTML;
-    // const html = Mustache.render(template, {
-    //   from: "User",
-    //   text: messageInput.value,
-    //   createdAt: formatedTime,
-    // });
-    // const div = document.createElement("div");
-    // div.innerHTML = html;
-    // messageDisplay.appendChild(div);
+sendBtn.addEventListener("click", (e) => {
+  e.preventDefault();
 
-    // Send my message to the server
+  // Send my message to the server
+  if (messageInput.value.trim() !== "") {
     socket.emit(
       "createMessage",
       {
@@ -95,8 +67,7 @@ sendBtn.addEventListener(
     );
     scrollTobottom();
   }
-  // }
-);
+});
 
 // Press send location button
 locationBtn.addEventListener("click", (e) => {
@@ -133,11 +104,7 @@ socket.on("locationUrl", (urlMessage) => {
   scrollTobottom();
 });
 
-
-
-function displayMessage(message) {
-  const div = document.createElement("div");
-  const formatedTime = moment(message.createdAt).format("LT");
-  div.textContent = `${message.from} ${formatedTime}: ${message.text}`;
-  messageDisplay.appendChild(div);
+function scrollTobottom() {
+  const lastMessage = document.querySelector("#messages").lastElementChild;
+  lastMessage.scrollIntoView();
 }

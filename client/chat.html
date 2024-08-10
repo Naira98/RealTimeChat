@@ -1,60 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📬</text></svg>"
+    />
+  </head>
 
-    
-</head>
-
-<body class="chat">
-
+  <body class="chat">
     <div class="chat__sidebar">
-        <h3>People</h3>
-        <div id="users"></div>
+      <h3>People</h3>
+      <div id="users"></div>
     </div>
 
     <div class="chat__main">
-        <ol id="messages" class="chat__messages"></ol>
+      <ol id="messages" class="chat__messages"></ol>
 
-        <div class="chat__footer">
-            <form id="message-form">
-              <input name="message" type="text" placeholder="Message" autofocus autocomplete="off"/>
-              <button id="submit-btn">Send</button>
-            </form>
-            <button id="send-location">Send location</button>
-          </div>
+      <div class="chat__footer">
+        <form id="message-form">
+          <input
+            name="message"
+            type="text"
+            placeholder="Message"
+            autofocus
+            autocomplete="off"
+          />
+          <button id="submit-btn">Send</button>
+        </form>
+        <button id="send-location">Send location</button>
+      </div>
     </div>
 
     <script id="message" type="text/template">
-        <li class="message">
-            <div class="message__title">
-                <h4>{{ from }}</h4>
-                <span>{{ createdAt }}</span>
-            </div>
-            <div class="message__body">
-                {{ text }}
-            </div>
-        </li>
+      <li class="message">
+          <div class="message__title">
+              <h4>{{ from }}</h4>
+              <span>{{ createdAt }}</span>
+          </div>
+          <div class="message__body">
+              {{ text }}
+          </div>
+      </li>
     </script>
     <script id="location-message" type="text/template">
-        <li class="message">
-            <div class="message__title">
-                <h4>{{ from }}</h4>
-                <span>{{ createdAt }}</span>
-            </div>
-            <div class="message__body">
-                <a target='__blank' href="{{ url }}">My current location</a>
-            </div>
-        </li>
+      <li class="message">
+          <div class="message__title">
+              <h4>{{ from }}</h4>
+              <span>{{ createdAt }}</span>
+          </div>
+          <div class="message__body">
+              <a target='__blank' href="{{ url }}">My current location</a>
+          </div>
+      </li>
     </script>
 
     <script type="module" src="chat.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
     <script src="lib/mustache.js"></script>
-</body>
-
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.13.0/qs.min.js"
+      integrity="sha512-LGi3LadLxI4NfDCsvTQ+Ps8dmV3PK7QUNFMEPyqpfFI78fu9YUXPRRVHIOH9xS5OLz035SSTH2Mc2Tzau+l7BA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </body>
 </html>
